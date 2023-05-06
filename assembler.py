@@ -5,8 +5,8 @@ Program to test this assembler
 """
 
 from antlr4 import *
-from antlr.arm_Lexer import arm_Lexer
-from antlr.arm_Parser import arm_Parser
+from antlr.armLexer import armLexer
+from antlr.armParser import armParser
 from armListener import armListener
 import sys
 
@@ -16,9 +16,9 @@ def printval(val):
     print()
 
 def assemble(command):
-    lexer = arm_assemblyLexer(InputStream(command))
+    lexer = armLexer(InputStream(command))
     stream = CommonTokenStream(lexer)
-    parser = arm_assemblyParser(stream)
+    parser = armParser(stream)
     tree = parser.instruction()
     printer = armListener()
     walker = ParseTreeWalker()

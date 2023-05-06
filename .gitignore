@@ -5,14 +5,14 @@ __pycache__/
 *$py.class
 
 # Antlr generated code
-arm_assembly.tokens
-arm_assemblyVisitor.py
-arm_assemblyListener.py
-arm_assemblyParser.py
-arm_assembly.interp
-arm_assemblyLexer.tokens
-arm_assemblyLexer.py
-arm_assemblyLexer.interp
+arm.tokens
+armVisitor.py
+armListener.py
+armParser.py
+arm.interp
+armLexer.tokens
+armLexer.py
+armLexer.interp
 
 # C extensions
 *.so
