@@ -4,6 +4,16 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# Antlr generated code
+arm_assembly.tokens
+arm_assemblyVisitor.py
+arm_assemblyListener.py
+arm_assemblyParser.py
+arm_assembly.interp
+arm_assemblyLexer.tokens
+arm_assemblyLexer.py
+arm_assemblyLexer.interp
+
 # C extensions
 *.so
 

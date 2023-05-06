@@ -1,6 +1,6 @@
 # Generated from arm_assembly.g4 by ANTLR 4.12.0
 from antlr4 import *
-from antlr.arm_assemblyParser import arm_assemblyParser
+from antlr.arm_Parser import arm_Parser
 
 from converters.dp_instruction import DPInstruction
 from converters.ls_instruction import LSInstruction
@@ -18,19 +18,19 @@ def get_number(hex, number):
 def get_shift_type(shift_type):
     return ['LSL', 'LSR', 'ASR', 'ROR', 'RRX'].index(shift_type)
 
-# This class defines a complete listener for a parse tree produced by arm_assemblyParser.
+# This class defines a complete listener for a parse tree produced by arm_Parser.
 class armListener(ParseTreeListener):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.instruction = None
 
-    # Enter a parse tree produced by arm_assemblyParser#instruction.
-    def enterInstruction(self, ctx:arm_assemblyParser.InstructionContext):
+    # Enter a parse tree produced by arm_Parser#instruction.
+    def enterInstruction(self, ctx:arm_Parser.InstructionContext):
         pass
 
-    # Exit a parse tree produced by arm_assemblyParser#instruction.
-    def exitInstruction(self, ctx:arm_assemblyParser.InstructionContext):
+    # Exit a parse tree produced by arm_Parser#instruction.
+    def exitInstruction(self, ctx:arm_Parser.InstructionContext):
         if ctx.dp_instruction():
             self.instruction = ctx.dp_instruction().value
         if ctx.mov_instruction():
@@ -44,31 +44,31 @@ class armListener(ParseTreeListener):
         if ctx.ls_instruction():
             self.instruction = ctx.ls_instruction().value
 
-    # Enter a parse tree produced by arm_assemblyParser#reg.
-    def enterReg(self, ctx:arm_assemblyParser.RegContext):
+    # Enter a parse tree produced by arm_Parser#reg.
+    def enterReg(self, ctx:arm_Parser.RegContext):
         pass
 
-    # Exit a parse tree produced by arm_assemblyParser#reg.
-    def exitReg(self, ctx:arm_assemblyParser.RegContext):
+    # Exit a parse tree produced by arm_Parser#reg.
+    def exitReg(self, ctx:arm_Parser.RegContext):
         ctx.value = int(ctx.getText().upper()[1:])
 
 
-    # Enter a parse tree produced by arm_assemblyParser#immediate.
-    def enterImmediate(self, ctx:arm_assemblyParser.ImmediateContext):
+    # Enter a parse tree produced by arm_Parser#immediate.
+    def enterImmediate(self, ctx:arm_Parser.ImmediateContext):
         pass
 
-    # Exit a parse tree produced by arm_assemblyParser#immediate.
-    def exitImmediate(self, ctx:arm_assemblyParser.ImmediateContext):
+    # Exit a parse tree produced by arm_Parser#immediate.
+    def exitImmediate(self, ctx:arm_Parser.ImmediateContext):
         hex = ctx.HEX().getText().upper() if ctx.HEX() else None
         num = ctx.NUMBER().getText() if ctx.NUMBER() else None
         ctx.value = get_number(hex, num)
 
-    # Enter a parse tree produced by arm_assemblyParser#dp_instruction.
-    def enterDp_instruction(self, ctx:arm_assemblyParser.Dp_instructionContext):
+    # Enter a parse tree produced by arm_Parser#dp_instruction.
+    def enterDp_instruction(self, ctx:arm_Parser.Dp_instructionContext):
         pass
 
-    # Exit a parse tree produced by arm_assemblyParser#dp_instruction.
-    def exitDp_instruction(self, ctx:arm_assemblyParser.Dp_instructionContext):
+    # Exit a parse tree produced by arm_Parser#dp_instruction.
+    def exitDp_instruction(self, ctx:arm_Parser.Dp_instructionContext):
         obj = DPInstruction()
         obj.opcode = obj.mapping[ctx.opcode.text.upper()]
         obj.rd = ctx.reg(0).value
@@ -76,48 +76,48 @@ class armListener(ParseTreeListener):
         obj.operand2 = ctx.operand2().value
         ctx.value = obj
 
-    # Enter a parse tree produced by arm_assemblyParser#mov_instruction.
-    def enterMov_instruction(self, ctx:arm_assemblyParser.Mov_instructionContext):
+    # Enter a parse tree produced by arm_Parser#mov_instruction.
+    def enterMov_instruction(self, ctx:arm_Parser.Mov_instructionContext):
         pass
 
-    # Exit a parse tree produced by arm_assemblyParser#mov_instruction.
-    def exitMov_instruction(self, ctx:arm_assemblyParser.Mov_instructionContext):
+    # Exit a parse tree produced by arm_Parser#mov_instruction.
+    def exitMov_instruction(self, ctx:arm_Parser.Mov_instructionContext):
         obj = MoveInstruction()
         obj.opcode = obj.mapping[ctx.opcode.text.upper()]
         obj.rd = ctx.reg().value
         obj.operand2 = ctx.operand2().value
         ctx.value = obj
 
-    # Enter a parse tree produced by arm_assemblyParser#shift_instruction.
-    def enterShift_instruction(self, ctx:arm_assemblyParser.Shift_instructionContext):
+    # Enter a parse tree produced by arm_Parser#shift_instruction.
+    def enterShift_instruction(self, ctx:arm_Parser.Shift_instructionContext):
         pass
 
-    # Exit a parse tree produced by arm_assemblyParser#shift_instruction.
-    def exitShift_instruction(self, ctx:arm_assemblyParser.Shift_instructionContext):
+    # Exit a parse tree produced by arm_Parser#shift_instruction.
+    def exitShift_instruction(self, ctx:arm_Parser.Shift_instructionContext):
         obj = ShiftInstruction()
         obj.rd = ctx.reg().value
         obj.shift_operand = ctx.shift_operand().value
         obj.shift_operand.shift_type = get_shift_type(ctx.opcode.text.upper())
         ctx.value = obj
 
-    # Enter a parse tree produced by arm_assemblyParser#mul_instruction.
-    def enterMul_instruction(self, ctx:arm_assemblyParser.Mul_instructionContext):
+    # Enter a parse tree produced by arm_Parser#mul_instruction.
+    def enterMul_instruction(self, ctx:arm_Parser.Mul_instructionContext):
         pass
 
-    # Exit a parse tree produced by arm_assemblyParser#mul_instruction.
-    def exitMul_instruction(self, ctx:arm_assemblyParser.Mul_instructionContext):
+    # Exit a parse tree produced by arm_Parser#mul_instruction.
+    def exitMul_instruction(self, ctx:arm_Parser.Mul_instructionContext):
         obj = MulInstruction()
         obj.rd = ctx.reg(0).value
         obj.rm = ctx.reg(1).value
         obj.rs = ctx.reg(2).value
         ctx.value = obj
 
-    # Enter a parse tree produced by arm_assemblyParser#mla_instruction.
-    def enterMla_instruction(self, ctx:arm_assemblyParser.Mla_instructionContext):
+    # Enter a parse tree produced by arm_Parser#mla_instruction.
+    def enterMla_instruction(self, ctx:arm_Parser.Mla_instructionContext):
         pass
 
-    # Exit a parse tree produced by arm_assemblyParser#mla_instruction.
-    def exitMla_instruction(self, ctx:arm_assemblyParser.Mla_instructionContext):
+    # Exit a parse tree produced by arm_Parser#mla_instruction.
+    def exitMla_instruction(self, ctx:arm_Parser.Mla_instructionContext):
         obj = MlaInstruction()
         obj.rd = ctx.reg(0).value
         obj.rm = ctx.reg(1).value
@@ -125,12 +125,12 @@ class armListener(ParseTreeListener):
         obj.rn = ctx.reg(3).value
         ctx.value = obj
 
-    # Enter a parse tree produced by arm_assemblyParser#ls_instruction.
-    def enterLs_instruction(self, ctx:arm_assemblyParser.Ls_instructionContext):
+    # Enter a parse tree produced by arm_Parser#ls_instruction.
+    def enterLs_instruction(self, ctx:arm_Parser.Ls_instructionContext):
         pass
 
-    # Exit a parse tree produced by arm_assemblyParser#ls_instruction.
-    def exitLs_instruction(self, ctx:arm_assemblyParser.Ls_instructionContext):
+    # Exit a parse tree produced by arm_Parser#ls_instruction.
+    def exitLs_instruction(self, ctx:arm_Parser.Ls_instructionContext):
         obj = LSInstruction()
         obj.opcode = ctx.opcode.text.upper()
         obj.rt = ctx.reg(0).value
@@ -139,12 +139,12 @@ class armListener(ParseTreeListener):
             obj.operand2 = ctx.operand2().value
         ctx.value = obj
 
-    # Enter a parse tree produced by arm_assemblyParser#shift_operand.
-    def enterShift_operand(self, ctx:arm_assemblyParser.Shift_operandContext):
+    # Enter a parse tree produced by arm_Parser#shift_operand.
+    def enterShift_operand(self, ctx:arm_Parser.Shift_operandContext):
         pass
 
-    # Exit a parse tree produced by arm_assemblyParser#shift_operand.
-    def exitShift_operand(self, ctx:arm_assemblyParser.Shift_operandContext):
+    # Exit a parse tree produced by arm_Parser#shift_operand.
+    def exitShift_operand(self, ctx:arm_Parser.Shift_operandContext):
         obj = ShiftOperand()
         obj.rm = ctx.reg(0).value
         if ctx.immediate():
@@ -153,12 +153,12 @@ class armListener(ParseTreeListener):
             obj.rs = ctx.reg(1).value
         ctx.value = obj
 
-    # Enter a parse tree produced by arm_assemblyParser#operand2.
-    def enterOperand2(self, ctx:arm_assemblyParser.Operand2Context):
+    # Enter a parse tree produced by arm_Parser#operand2.
+    def enterOperand2(self, ctx:arm_Parser.Operand2Context):
         pass
 
-    # Exit a parse tree produced by arm_assemblyParser#operand2.
-    def exitOperand2(self, ctx:arm_assemblyParser.Operand2Context):
+    # Exit a parse tree produced by arm_Parser#operand2.
+    def exitOperand2(self, ctx:arm_Parser.Operand2Context):
         obj = Operand2()
         if ctx.immediate_format():
             obj.immediate_format = ctx.immediate_format().value
@@ -166,12 +166,12 @@ class armListener(ParseTreeListener):
             obj.register_format = ctx.register_format().value
         ctx.value = obj
 
-    # Enter a parse tree produced by arm_assemblyParser#immediate_format.
-    def enterImmediate_format(self, ctx:arm_assemblyParser.Immediate_formatContext):
+    # Enter a parse tree produced by arm_Parser#immediate_format.
+    def enterImmediate_format(self, ctx:arm_Parser.Immediate_formatContext):
         pass
 
-    # Exit a parse tree produced by arm_assemblyParser#immediate_format.
-    def exitImmediate_format(self, ctx:arm_assemblyParser.Immediate_formatContext):
+    # Exit a parse tree produced by arm_Parser#immediate_format.
+    def exitImmediate_format(self, ctx:arm_Parser.Immediate_formatContext):
         obj = ImmediateFormat()
         if ctx.COMMA():
             hex = ctx.HEX().getText() if ctx.HEX() else None
@@ -182,12 +182,12 @@ class armListener(ParseTreeListener):
         obj.number = ctx.immediate().value
         ctx.value = obj
 
-    # Enter a parse tree produced by arm_assemblyParser#register_format.
-    def enterRegister_format(self, ctx:arm_assemblyParser.Register_formatContext):
+    # Enter a parse tree produced by arm_Parser#register_format.
+    def enterRegister_format(self, ctx:arm_Parser.Register_formatContext):
         pass
 
-    # Exit a parse tree produced by arm_assemblyParser#register_format.
-    def exitRegister_format(self, ctx:arm_assemblyParser.Register_formatContext):
+    # Exit a parse tree produced by arm_Parser#register_format.
+    def exitRegister_format(self, ctx:arm_Parser.Register_formatContext):
         obj = RegisterFormat()
         obj.rm = ctx.reg().value
         if ctx.shift_op():
@@ -195,12 +195,12 @@ class armListener(ParseTreeListener):
 
         ctx.value = obj
 
-    # Enter a parse tree produced by arm_assemblyParser#shift_op.
-    def enterShift_op(self, ctx:arm_assemblyParser.Shift_opContext):
+    # Enter a parse tree produced by arm_Parser#shift_op.
+    def enterShift_op(self, ctx:arm_Parser.Shift_opContext):
         pass
 
-    # Exit a parse tree produced by arm_assemblyParser#shift_op.
-    def exitShift_op(self, ctx:arm_assemblyParser.Shift_opContext):
+    # Exit a parse tree produced by arm_Parser#shift_op.
+    def exitShift_op(self, ctx:arm_Parser.Shift_opContext):
         obj = ShiftOp()
         obj.shift_type = ctx.shift_type().value
         if ctx.immediate_format():
@@ -209,14 +209,14 @@ class armListener(ParseTreeListener):
             obj.rs = ctx.reg().value
         ctx.value = obj
 
-    # Enter a parse tree produced by arm_assemblyParser#shift_type.
-    def enterShift_type(self, ctx:arm_assemblyParser.Shift_typeContext):
+    # Enter a parse tree produced by arm_Parser#shift_type.
+    def enterShift_type(self, ctx:arm_Parser.Shift_typeContext):
         pass
 
-    # Exit a parse tree produced by arm_assemblyParser#shift_type.
-    def exitShift_type(self, ctx:arm_assemblyParser.Shift_typeContext):
+    # Exit a parse tree produced by arm_Parser#shift_type.
+    def exitShift_type(self, ctx:arm_Parser.Shift_typeContext):
         ctx.value = get_shift_type(ctx.getText().upper())
 
 
 
-del arm_assemblyParser
+del arm_Parser
