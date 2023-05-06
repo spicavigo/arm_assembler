@@ -28,12 +28,24 @@ class ImmediateFormat(object):
         self.number = 0
 
     def convert(self):
+        if self.rotamt == 0 and self.number > 255:
+            self.number, self.rotamt = self.rotate(self.number)
         rotamt = format(self.rotamt,'05b')[:4]
         num = format(self.number,'08b')
         return rotamt + num
 
     def convert_shiftamt(self):
         return format(self.number,'05b')
+
+    def rotate_left(self, x, n):
+        return int(f"{x:032b}"[n:] + f"{x:032b}"[:n], 2)
+
+    def rotate(self, n):
+        rot = 0
+        for rot in range(2, 32, 2):
+            if self.rotate_left(n, rot) < 255:
+                return self.rotate_left(n, rot), rot
+        raise Exception("Unable to encode number %d", n)
 
 
 class RegisterFormat(object):
